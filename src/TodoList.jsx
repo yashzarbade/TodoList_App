@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 uuidv4();
 
 export default function TodoList(){
-    let[Todos,setTodos] = useState([{task:"sample task",id:uuidv4()}]);
+    let[Todos,setTodos] = useState([{task:"sample task",id:uuidv4(),isDone:false}]);
     let[newTodo, setNewTodo] = useState("");
 
     function updateNewTodo(event){
@@ -46,6 +46,25 @@ export default function TodoList(){
             })
         ))
     }
+
+    function markDone(isDone,id){
+        isDone = !isDone;
+        if(isDone){
+             setTodos((prevTask)=>(
+            prevTask.map((todo)=>{
+                if(todo.id == id){
+                    return {
+                    ...todo,
+                    task:<span style={{textDecoration:"line-through",color:"green"}}>{todo.task}</span>
+                }
+                }else{
+                    return todo;
+                }
+            })
+        ))
+        }
+        console.log("working");
+    }
     return (
         <div>
             <h1>my first todo app</h1>
@@ -65,6 +84,8 @@ export default function TodoList(){
 
                             <button onClick={() => DeleteToDo(todo.id)}>Delete</button>
                             &nbsp;&nbsp;&nbsp;
+                            <button onClick={()=>markDone(todo.isDone,todo.id)}>Mark as done</button>
+                             &nbsp;&nbsp;&nbsp;
                             <button onClick={()=>UpperCaseOne(todo.id)}>UpperCaseOne</button>
                         </li>
                     ))
